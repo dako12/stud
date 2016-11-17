@@ -10,6 +10,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -30,7 +31,7 @@ public class ViewCustomer extends BorderPane{
 	private HBox root = new HBox();
 	private HBox rootBtn = new HBox();
 	
-	private TableView<String> tabProd = new TableView<>();
+	private TableView<Product> tabProd = new TableView<>();
 	private ListView<Product> listProd = new ListView<Product>();
 	private Button buyBtn = new Button("Buy");
 	
@@ -39,12 +40,17 @@ public class ViewCustomer extends BorderPane{
 	public ViewCustomer() {
 		
 		TableColumn name = new TableColumn("Name");
-		
 		name.setPrefWidth(80);
+		name.setCellFactory(
+				new PropertyValueFactory<>("name")	);
 		TableColumn price = new TableColumn("Price");
 		price.setPrefWidth(80);
+		price.setCellFactory(
+				new PropertyValueFactory<>("price"));
 		TableColumn buyCount = new TableColumn("Buy Count");
 		buyCount.setPrefWidth(90);
+		buyCount.setCellFactory(
+				new PropertyValueFactory<>("quantiy"));
 		tabProd.getColumns().addAll(name,price,buyCount);
 		listProd.setPrefWidth(200);
 		
