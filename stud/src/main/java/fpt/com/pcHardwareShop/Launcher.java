@@ -1,5 +1,6 @@
 package fpt.com.pcHardwareShop;
 
+import fpt.com.pcHardwareShop.controller.ControllerCustomer;
 import fpt.com.pcHardwareShop.controller.ControllerShop;
 import fpt.com.pcHardwareShop.model.ModelShop;
 import fpt.com.pcHardwareShop.view.client.ViewCustomer;
@@ -39,9 +40,11 @@ public class Launcher extends Application
 		
 		ViewShop view = new ViewShop();
 		
+		ViewCustomer viewCust = new ViewCustomer();
+		
 		ControllerShop ctrl = new ControllerShop(model, view);
 		
-		ViewCustomer viewCust = new ViewCustomer();
+		ControllerCustomer ctrlC = new ControllerCustomer(model,viewCust);
 	
 		Stage secondStage = new Stage();
 		

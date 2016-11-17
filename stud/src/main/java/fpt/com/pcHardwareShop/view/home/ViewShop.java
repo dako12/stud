@@ -59,6 +59,8 @@ public class ViewShop extends HBox{
 		
 		
 		
+		
+		
 		listProd.setCellFactory(c -> {
 
 			ListCell<Product> cell = new ListCell<Product>() 
@@ -151,6 +153,9 @@ public class ViewShop extends HBox{
 	 * @return the selected Product of the list
 	 */
 	public Product getListProdItem(){
+		
+	
+		
 		return listProd.getSelectionModel().getSelectedItem();
 		
 	}
