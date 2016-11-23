@@ -3,15 +3,20 @@ package fpt.com.pcHardwareShop.view.home;
 
 import fpt.com.pcHardwareShop.model.ModelShop;
 import fpt.com.pcHardwareShop.model.Product;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -29,11 +34,12 @@ import javafx.scene.layout.VBox;
  * @author dakodak
  *
  */
-public class ViewShop extends HBox{
+public class ViewShop extends BorderPane{
 	
-	
-	private VBox root = new VBox();
-	private HBox rootBtn = new HBox();
+	private HBox root = new HBox();
+	private VBox rootInput = new VBox();
+	private HBox rootStrategy = new HBox();
+	private HBox rootControlBtn = new HBox();
 	
 	private ListView<Product> listProd = new ListView<Product>();
 	private Label nameLbl= new Label("Name : ");
@@ -42,25 +48,41 @@ public class ViewShop extends HBox{
 	private TextField nameTfd= new TextField();
 	private TextField priceTfd= new TextField();
 	private TextField countTfd = new TextField();
-	private StringProperty strBtn = new SimpleStringProperty("add...");
-	private Button addBtn = new Button();
+	private Button addBtn = new Button("add...");
 	private Button delBtn = new Button("delete");
+	private Button saveBtn = new Button("speichern");
+	private Button loadBtn = new Button("Laden");
+	private final ChoiceBox<String> strategyChoice = new ChoiceBox<>(FXCollections.observableArrayList("binStrategy","xmlStrategy","XStreamStrategy"));
 	
-	
+	/**
+	 * Class Constructor
+	 */
 	public ViewShop() {
 		
-		rootBtn.getChildren().addAll(addBtn,delBtn);
+		//--------------------------------------------------------
+		//create window
+		//--------------------------------------------------------
+		rootControlBtn.getChildren().addAll(addBtn,delBtn);
+		rootControlBtn.setPadding(new Insets(3,0,0,70));
+		rootControlBtn.setSpacing(5);
 		
-		root.getChildren().addAll(nameLbl,nameTfd,priceLbl,priceTfd,countLbl,countTfd,rootBtn);
-		
-		getChildren().addAll(listProd,root);
-		
-		addBtn.textProperty().bind(strBtn);
+		rootStrategy.getChildren().addAll(strategyChoice,loadBtn,saveBtn);
+		rootStrategy.setSpacing(10);
+		rootStrategy.setPadding(new Insets(0,4,1,4));
 		
 		
+		rootInput.getChildren().addAll(nameLbl,nameTfd,priceLbl,priceTfd,countLbl,countTfd,rootControlBtn);
 		
+		strategyChoice.setTooltip(new Tooltip("Select the strategy."));
+		strategyChoice.setPrefWidth(200);
 		
+		root.getChildren().addAll(listProd,rootInput);
+		root.setSpacing(5);
+		setTop(rootStrategy);
+		setCenter(root);
 		
+								
+				
 		listProd.setCellFactory(c -> {
 
 			ListCell<Product> cell = new ListCell<Product>() 
@@ -76,7 +98,7 @@ public class ViewShop extends HBox{
 					} 
 					else
 					{
-						//util for the delete fonction
+						
 						setText("");
 					}
 				}
@@ -85,11 +107,24 @@ public class ViewShop extends HBox{
 			return cell;
 
 		});
+		
+		
+	}
+	
+	//----------------------------------------------------
+	//help methods
+	//----------------------------------------------------
+	
+	/**
+	 * Returns the selected strategy for saving
+	 * @return the value in the choice box
+	 */
+	public String getStrategy(){					
+		return strategyChoice.getValue();
 	}
 	
 	/**
-	 * 
-	 * @param eventHandler
+	 * @param eventHandler for the button add
 	 */
 	public void addBtnHandler(EventHandler<ActionEvent>  eventHandler)
 	{
@@ -98,46 +133,91 @@ public class ViewShop extends HBox{
 	
 	
 	/**
-	 * 
-	 * @param eventHandler
+	 * @param eventHandler for the button delete
 	 */
 	public void delBtnHandler(EventHandler<ActionEvent> eventHandler){
 		delBtn.addEventHandler(ActionEvent.ACTION, eventHandler);
 	}
+	
+	
+	/**
+	 * @param eventHandler for the button save
+	 */
+	public void saveBtnHandler(EventHandler<ActionEvent> eventHandler)
+	{
+		saveBtn.addEventHandler(ActionEvent.ACTION, eventHandler);
+	}
+	
+	
+	/**
+	 * @param eventHandler for the button load
+	 */
+	public void loadBtnHandler(EventHandler<ActionEvent> eventHandler)
+	{
+		loadBtn.addEventHandler(ActionEvent.ACTION, eventHandler);
+	}
 
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the name of the product
+	 * @return the text in the textfield's name
 	 */
 	public String getNameTfdText() 
 	{
-		return nameTfd.getText();
+		  return  nameTfd.getText();
 	}
+	
 
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the price of the product
+	 * @author dakodak
+	 * @return the entered value
+	 * @since 18.11. #modification for a better handling of the exception
 	 */
-	public String getPriceTfdText() 
+	public double getPriceTfdText() 
 	{
-		return priceTfd.getText();
+		try {
+			return Double.parseDouble(priceTfd.getText());
+		} catch (java.lang.NumberFormatException e) {
+			
+			// return -1 to differ from 0 because of NoQuantity or noPrice
+			return -1d;
+		}
+		
 	}
 	
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the quantity of the product
+	 * @author dakodak
+	 * @since 18.11. #modification for a better handling of the exception
+	 * @return the entered number in the textfield 
 	 */
-	public String getCountTfdText() 
+	public int getCountTfdText() 
 	{
-		return countTfd.getText();
+		try {
+			return Integer.parseInt(countTfd.getText());
+			
+		} catch (java.lang.NumberFormatException e) {
+			
+			// return -1 to differ from 0 because of NoQuantity or noPrice
+			return -1;
+			}
+	}
+	
+	/**
+	 * clears the Textfields 
+	 */
+	public void clear(){
+		nameTfd.clear();
+		priceTfd.clear();
+		countTfd.clear();
 	}
 	
 	
 	/**
-	 * 
+	 * binds the model to view
 	 * @param model
 	 */
 	public void bindData(ModelShop model)
@@ -152,12 +232,54 @@ public class ViewShop extends HBox{
 	 * 
 	 * @return the selected Product of the list
 	 */
-	public Product getListProdItem(){
-		
+	public Product getListProdItem()
+	{	
+		return listProd.getSelectionModel().getSelectedItem();		
+	}
 	
-		
-		return listProd.getSelectionModel().getSelectedItem();
-		
+	
+	/**
+	 * Alert message No Price or No quantity</br>
+	 * happens when the price or the name or the count was'nt specified 
+	 */
+	public void alertNoInformation()
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Error no complete fields  ");
+		alert.setHeaderText(null);
+		alert.setContentText("Please You have probably vorgot to fill a field or your answer is not correct");
+
+		alert.showAndWait();
+	}
+	
+	
+	/**
+	 * Alert message Loading</br>
+	 * happens when an error occurred while loading
+	 */
+	public void alertLoading()
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Error");
+		alert.setHeaderText(null);
+		alert.setContentText("Error while loading. The file does'nt exist.");
+
+		alert.showAndWait();
+	}
+	
+	
+	/**
+	 * Alert message Strategy</br>
+	 * happens if no strategy exists
+	 */
+	public void alertNoStrategy()
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Error");
+		alert.setHeaderText(null);
+		alert.setContentText("No Strategy chosen. You have to select a strategy!");
+
+		alert.showAndWait();
 	}
 	
 

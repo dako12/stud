@@ -1,5 +1,15 @@
 package fpt.com.pcHardwareShop.model;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import fpt.com.pcHardwareShop.MyException.IDOverflowException;
+import fpt.com.pcHardwareShop.util.IDGenerator;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -22,26 +32,54 @@ import javafx.beans.value.ObservableValue;
  * @author dakodak
  *
  */
-
-public class Product implements fpt.com.Product {
+@XStreamAlias("product")
+public class Product implements fpt.com.Product, Externalizable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@XStreamAlias("name")
+	@XStreamAsAttribute
 	private StringProperty name = new SimpleStringProperty(" ");
+	@XStreamAlias("price")
+	@XStreamAsAttribute
 	private DoubleProperty price = new SimpleDoubleProperty();
+	@XStreamAlias("quantity")
+	@XStreamAsAttribute
 	private IntegerProperty quantity = new SimpleIntegerProperty();
+	@XStreamAlias("id")
+	@XStreamAsAttribute
 	private long id;
 	
+	
+	/**
+	 * Class constructor
+	 */
 	public Product() {
 		
 	}
 	
+	
+	/**
+	 * Class constructor 
+	 * 
+	 * 
+	 * @param name  
+	 * @param price
+	 * @param quantity
+	 */
 	public  Product(String name, double price, int quantity) {
 		setName(name);
 		setPrice(price);
 		setQuantity(quantity);
+		
+		try {
+			this.id = IDGenerator.generateID() ;
+		} catch (IDOverflowException e) {
+			
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -109,6 +147,33 @@ public class Product implements fpt.com.Product {
 	public ObservableValue<Number> quantityProperty() {
 		
 		return quantity;
+	}
+
+	
+	/**
+	 * 
+	 * @since 18.11.
+	 */
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(getName());
+		out.writeDouble(getPrice());
+		out.writeInt(getQuantity());
+		
+	}
+
+	
+	/**
+	 * 
+	 * @since 18.11.
+	 */
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		setName((String)in.readObject());
+		setPrice(in.readDouble());
+		setQuantity(in.readInt());
+		
+		
 	}
 
 }

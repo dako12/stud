@@ -2,6 +2,11 @@ package fpt.com.pcHardwareShop.model;
 
 
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 import javafx.collections.ModifiableObservableListBase;
 
 
@@ -19,7 +24,7 @@ import javafx.collections.ModifiableObservableListBase;
  * @author dakodak
  *
  */
-public class ModelShop extends ModifiableObservableListBase<Product>  {
+public class ModelShop extends ModifiableObservableListBase<Product> {
 	
 	private ProductList list = new ProductList() ;
 	
@@ -66,24 +71,27 @@ public class ModelShop extends ModifiableObservableListBase<Product>  {
 	}
 	
 	/**
-	 * 
-	 * 
+	 * Adds a new product in the shopping cart
+	 *  
 	 * @param name
 	 * @param price
 	 * @param qty
 	 */
-	public void addProduct(String name, String price, String qty){
-		Product newEntry = new Product(name,Double.parseDouble(price),Integer.parseInt(qty));
+	public void addProduct(String name, double price, int qty){
+		Product newEntry = new Product (name,price,qty);
 	    this.add(newEntry);
 	}
 	
 	/**
+	 * Deletes the selected  product in the shopping cart 
 	 * 
-	 * @param p
+	 * @param p to delete
 	 */
 	public void deleteProduct(Product p){
 		this.remove(p);
 	}
+
+
 	
 	
 	

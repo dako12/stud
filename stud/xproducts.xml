@@ -1,0 +1,14 @@
+<fpt.com.pcHardwareShop.model.ProductList serialization="custom">
+  <unserializable-parents/>
+  <list>
+    <default>
+      <size>1</size>
+    </default>
+    <int>1</int>
+    <fpt.com.pcHardwareShop.model.Product>
+      <string>der</string>
+      <double>12.0</double>
+      <int>13</int>
+    </fpt.com.pcHardwareShop.model.Product>
+  </list>
+</fpt.com.pcHardwareShop.model.ProductList>

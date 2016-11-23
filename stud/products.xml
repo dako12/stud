@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_111" class="java.beans.XMLDecoder">
+ <object class="fpt.com.pcHardwareShop.model.Product">
+  <void property="name">
+   <string>de</string>
+  </void>
+  <void property="price">
+   <double>24.0</double>
+  </void>
+  <void property="quantity">
+   <int>12</int>
+  </void>
+ </object>
+</java>

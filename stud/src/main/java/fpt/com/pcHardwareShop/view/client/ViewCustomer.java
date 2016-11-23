@@ -10,7 +10,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -36,22 +35,30 @@ public class ViewCustomer extends BorderPane{
 	private Button buyBtn = new Button("Buy");
 	
 	
+	/**
+	 * Class constructor
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ViewCustomer() {
 		
+		//---------------------------------------------------------
+		//create window
+		//---------------------------------------------------------
+		
 		TableColumn name = new TableColumn("Name");
 		name.setPrefWidth(80);
-		name.setCellFactory(
-				new PropertyValueFactory<>("name")	);
+		
 		TableColumn price = new TableColumn("Price");
 		price.setPrefWidth(80);
-		price.setCellFactory(
-				new PropertyValueFactory<>("price"));
+		
 		TableColumn buyCount = new TableColumn("Buy Count");
 		buyCount.setPrefWidth(90);
-		buyCount.setCellFactory(
-				new PropertyValueFactory<>("quantiy"));
+	
+		
 		tabProd.getColumns().addAll(name,price,buyCount);
+		
+		
+		
 		listProd.setPrefWidth(200);
 		
 		
@@ -91,23 +98,30 @@ public class ViewCustomer extends BorderPane{
 		setCenter(root);
 		setBottom(rootBtn);
 		
-	
-		
-		
+				
 	}
 	
+	//-----------------------------------------------------------
+	//help methods
+	//-----------------------------------------------------------
 	
 	/**
-	 * 
-	 * @param model
+	 * Binds the model to the view
+	 * @param model to bind to the view
 	 */
 	public void bindData(ModelShop model)
 	{
 		//receives model data and update view
-				listProd.setItems(model);			
+				listProd.setItems(model);
+				
 	}
 	
-	public void buyBtnHandler(EventHandler<ActionEvent> eventHandler){
+   
+    /**
+     * @param eventHandler for the button buy
+     */
+	public void buyBtnHandler(EventHandler<ActionEvent> eventHandler)
+	{
 		buyBtn.setOnAction(eventHandler);
 	}
 	
