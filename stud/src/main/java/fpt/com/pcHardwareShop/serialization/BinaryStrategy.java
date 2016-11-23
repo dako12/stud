@@ -29,7 +29,7 @@ public class BinaryStrategy implements fpt.com.SerializableStrategy {
 			e.printStackTrace();
 		
 		}
-		System.out.println(p);
+		//System.out.println(p);
 		return p;
 	}
 
