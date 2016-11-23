@@ -73,7 +73,7 @@ public class ViewShop extends BorderPane{
 		
 		rootInput.getChildren().addAll(nameLbl,nameTfd,priceLbl,priceTfd,countLbl,countTfd,rootControlBtn);
 		
-		strategyChoice.setTooltip(new Tooltip("Select the strategy."));
+		strategyChoice.setTooltip(new Tooltip("Select a strategy!"));
 		strategyChoice.setPrefWidth(200);
 		
 		root.getChildren().addAll(listProd,rootInput);
@@ -240,14 +240,14 @@ public class ViewShop extends BorderPane{
 	
 	/**
 	 * Alert message No Price or No quantity</br>
-	 * happens when the price or the name or the count was'nt specified 
+	 * happens when the price or the name or the count wasn't specified 
 	 */
 	public void alertNoInformation()
 	{
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Error no complete fields  ");
 		alert.setHeaderText(null);
-		alert.setContentText("Please You have probably vorgot to fill a field or your answer is not correct");
+		alert.setContentText("Please You have probably forgotten to fill a field or your entry is not correct");
 
 		alert.showAndWait();
 	}
@@ -262,7 +262,7 @@ public class ViewShop extends BorderPane{
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Error");
 		alert.setHeaderText(null);
-		alert.setContentText("Error while loading. The file does'nt exist.");
+		alert.setContentText("Error while loading. The file doesn't exist.");
 
 		alert.showAndWait();
 	}
